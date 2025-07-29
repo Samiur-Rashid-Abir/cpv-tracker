@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CPV Timeline</title>
+  <style>
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #333;
+      --subtext-color: #666;
+      --container-bg: #ffffff;
+      --timeline-line: #c5e1a5;
+      --primary: #2e7d32;
+      --completed-bg: #e0f2f1;
+      --badge-text: #2e7d32;
+      --failed-color: #d32f2f;
+    }
+
+    body.dark {
+      --bg-color: #1e1e1e;
+      --text-color: #e0e0e0;
+      --subtext-color: #aaaaaa;
+      --container-bg: #2c2c2c;
+      --timeline-line: #66bb6a;
+      --primary: #81c784;
+      --completed-bg: #4caf50;
+      --badge-text: #ffffff;
+      --failed-color: #ef5350;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 20px;
+      z-index: 999;
+      background: var(--container-bg);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text-color);
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 80px auto 20px;
+      background: var(--container-bg);
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .header h2 {
+      font-size: 20px;
+    }
+
+    .header span {
+      background-color: var(--completed-bg);
+      color: var(--badge-text);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .timeline {
+      position: relative;
+      margin-top: 20px;
+      padding-left: 30px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--timeline-line);
+    }
+
+    .timeline-item {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeSlideIn 0.6s forwards;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -19px;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background-color: var(--primary);
+      box-shadow: 0 0 0 2px var(--primary);
+      transition: transform 0.3s ease;
+    }
+
+    .timeline-item.failed::before {
+      background-color: var(--failed-color);
+      box-shadow: 0 0 0 2px var(--failed-color);
+    }
+
+    .timeline-item h4 {
+      margin: 0 0 5px;
+      font-size: 16px;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--subtext-color);
+    }
+
+    .timeline-item:hover::before {
+      transform: scale(1.2);
+    }
+
+    .timeline-item.clickable {
+      cursor: pointer;
+    }
+
+    .footer {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      font-size: 13px;
+      color: var(--subtext-color);
+    }
+
+    #failedStep {
+      display: none;
+      animation: fadeSlideIn 0.6s forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 600px) {
+      .container {
+        margin: 70px 10px 20px;
+        padding: 20px;
+      }
+
+      .timeline {
+        padding-left: 25px;
+      }
+
+      .timeline::before {
+        left: 10px;
+      }
+
+      .timeline-item::before {
+        left: -20px;
+      }
+
+      .header h2 {
+        font-size: 18px;
+      }
+
+      .header span {
+        font-size: 12px;
+        padding: 4px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Theme Toggle Icon -->
+<button class="theme-toggle" id="themeToggle" title="Toggle Theme">🌙</button>
+
+<div class="container">
+  <div class="header">
+    <h2>CPV Process Timeline</h2>
+    <span>COMPLETED</span>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <h4>08:30 - CPV Request Created by Officer</h4>
+      <p>Officer initiated the CPV request in system.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>08:45 - Processing</h4>
+      <p>The request is being prepared for logging.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>09:00 - CPV Request Received</h4>
+      <p>Request logged in the system.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>10:30 - CPV Agent Assigned</h4>
+      <p>Agent has been assigned for verification.</p>
+    </div>
+    <div class="timeline-item">
+      <h4>14:00 - Out for CPV</h4>
+      <p>Agent is visiting the customer address.</p>
+    </div>
+    <div class="timeline-item clickable" onclick="toggleFailed()">
+      <h4>16:30 - CPV Completed Successfully</h4>
+      <p>Verification completed and submitted. <em>(Click to toggle failure)</em></p>
+    </div>
+    <div class="timeline-item failed" id="failedStep">
+      <h4>16:30 - CPV Failed</h4>
+      <p>Verification failed due to mismatched documents.</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Courier: Internal CPV Agent</p>
+    <p>Tracking ID: CPV-20250729-001</p>
+  </div>
+</div>
+
+<script>
+  const toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark');
+    toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+  });
+
+  function toggleFailed() {
+    const failed = document.getElementById('failedStep');
+    failed.style.display = failed.style.display === 'block' ? 'none' : 'block';
+  }
+</script>
+
+</body>
+</html>
